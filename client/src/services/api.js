@@ -1,0 +1,20 @@
+import axios from 'axios';
+
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+export const getDevelopers = async () => {
+  const response = await api.get('/developers');
+  return response.data;
+};
+
+export const addDeveloper = async (developerData) => {
+  const response = await api.post('/developers', developerData);
+  return response.data;
+};

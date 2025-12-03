@@ -1,0 +1,238 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100;
+    perspective: 1000px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+@layer components {
+  .header {
+    @apply bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 py-16 relative overflow-hidden;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .header-content {
+    @apply text-center relative z-10;
+    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .logo {
+    @apply flex items-center justify-center gap-3 mb-2;
+  }
+
+  .logo h1 {
+    @apply text-4xl font-bold text-white;
+    text-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  }
+
+  .tagline {
+    @apply text-lg text-white/85 font-light;
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+
+  .container {
+    @apply w-full max-w-6xl mx-auto px-6;
+  }
+
+  .grid-layout {
+    @apply grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8 items-start;
+    perspective: 1200px;
+  }
+
+  .sidebar {
+    @apply sticky top-6;
+  }
+
+  .form-card {
+    @apply bg-slate-800/70 backdrop-blur-xl rounded-2xl p-7 shadow-lg border border-slate-700/20;
+    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .form-card:hover {
+    @apply shadow-2xl;
+    background: rgba(30, 41, 59, 0.9);
+    transform: translateZ(10px) rotateX(2deg);
+  }
+
+  .form-title {
+    @apply text-xl font-semibold text-slate-100 mb-6 pb-4 border-b border-slate-700/50 flex items-center gap-2;
+  }
+
+  .form-icon {
+    @apply text-lg;
+  }
+
+  .developer-form {
+    @apply flex flex-col gap-5;
+  }
+
+  .form-group {
+    @apply flex flex-col gap-1.5;
+  }
+
+  .developer-card {
+    @apply bg-slate-800/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-slate-700/20 transition-all duration-300 relative overflow-hidden;
+    transform-style: preserve-3d;
+    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards, glow 3s ease-in-out infinite;
+  }
+
+  .developer-card:nth-child(1) { animation-delay: 0.1s, 0s; }
+  .developer-card:nth-child(2) { animation-delay: 0.2s, 0.3s; }
+  .developer-card:nth-child(3) { animation-delay: 0.3s, 0.6s; }
+  .developer-card:nth-child(n+4) { animation-delay: 0.4s, 0.9s; }
+
+  .developer-card::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 opacity-0 transition-all duration-300;
+  }
+
+  .developer-card::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 transition-opacity duration-300;
+  }
+
+  .developer-card:hover {
+    @apply shadow-2xl;
+    transform: translateY(-8px) translateZ(20px) rotateX(5deg) rotateY(-2deg);
+    background: rgba(30, 41, 59, 0.9);
+  }
+
+  .developer-card:hover::before {
+    @apply opacity-100;
+  }
+
+  .developer-card:hover::after {
+    @apply opacity-100;
+  }
+
+  .card-header {
+    @apply flex items-center gap-4 mb-5;
+  }
+
+  .card-info {
+    @apply flex-1 min-w-0;
+  }
+
+  .dev-name {
+    @apply text-lg font-semibold text-slate-100 mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis;
+  }
+
+  .card-body {
+    @apply flex flex-col gap-4;
+  }
+
+  .experience {
+    @apply flex items-center gap-2 text-slate-400 text-sm;
+  }
+
+  .exp-icon {
+    @apply text-base;
+  }
+
+  .tech-stack {
+    @apply flex flex-col gap-2;
+  }
+
+  .tech-label {
+    @apply text-xs font-medium text-slate-500 uppercase tracking-wider;
+  }
+
+  .tech-tags {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .tech-tag {
+    @apply px-3 py-1.5 bg-gradient-to-br from-purple-600/20 to-cyan-600/20 text-purple-300 rounded text-xs font-medium border border-purple-600/40 transition-all duration-300 relative backdrop-blur-sm;
+    transform-style: preserve-3d;
+  }
+
+  .tech-tag::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-500 rounded opacity-0 transition-opacity duration-300 -z-10;
+  }
+
+  .tech-tag:hover {
+    @apply text-white;
+    transform: translateZ(5px) scale(1.1);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+  }
+
+  .tech-tag:hover::before {
+    @apply opacity-100;
+  }
+
+  .footer {
+    @apply bg-gradient-to-r from-slate-800/70 to-slate-900/70 backdrop-blur-xl text-slate-400 py-6 text-center text-sm border-t border-slate-700/20;
+    animation: fadeInUp 0.6s ease-out;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateZ(0) rotateX(0deg); }
+  50% { transform: translateZ(20px) rotateX(1deg); }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50px) rotateY(20deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .grid-layout {
+    @apply grid-cols-1;
+  }
+
+  .sidebar {
+    @apply static;
+  }
+}
+
+@media (max-width: 640px) {
+  .logo h1 {
+    @apply text-2xl;
+  }
+
+  .tagline {
+    @apply text-sm;
+  }
+
+  .container {
+    @apply px-4;
+  }
+}
