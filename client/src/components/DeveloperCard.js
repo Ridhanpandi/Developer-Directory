@@ -6,8 +6,8 @@ const roleColors = {
   'Full-Stack': { bg: 'from-green-500/20 to-green-600/20', text: 'text-green-300', border: 'border-green-500/40' }
 };
 
-function DeveloperCard({ developer }) {
-  const { name, role, techStack, experience } = developer;
+function DeveloperCard({ developer, onDelete }) {
+  const { id, name, role, techStack, experience } = developer;
   const colors = roleColors[role] || roleColors['Full-Stack'];
 
   const getInitials = (name) => {
@@ -20,18 +20,33 @@ function DeveloperCard({ developer }) {
     'Full-Stack': 'from-green-600 to-emerald-600'
   };
 
+  const handleDelete = () => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      onDelete(id);
+    }
+  };
+
   return (
     <article className="developer-card">
-      <div className="card-header">
-        <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 bg-gradient-to-br ${gradients[role] || gradients['Full-Stack']}`}>
-          {getInitials(name)}
+      <div className="flex justify-between items-start gap-3 mb-4">
+        <div className="flex items-center gap-4 flex-1">
+          <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 bg-gradient-to-br ${gradients[role] || gradients['Full-Stack']}`}>
+            {getInitials(name)}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-slate-100 mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{name}</h3>
+            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border uppercase tracking-wide bg-gradient-to-br ${colors.bg} ${colors.text} ${colors.border} border`}>
+              {role}
+            </span>
+          </div>
         </div>
-        <div className="card-info">
-          <h3 className="dev-name">{name}</h3>
-          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border uppercase tracking-wide bg-gradient-to-br ${colors.bg} ${colors.text} ${colors.border} border`}>
-            {role}
-          </span>
-        </div>
+        <button
+          onClick={handleDelete}
+          className="text-red-400 hover:text-red-300 hover:bg-red-500/20 p-2 rounded-lg transition-all duration-200 flex-shrink-0"
+          title="Delete developer"
+        >
+          ✕
+        </button>
       </div>
       
       <div className="card-body">

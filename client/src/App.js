@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import DeveloperForm from './components/DeveloperForm';
 import DeveloperList from './components/DeveloperList';
 import SearchFilter from './components/SearchFilter';
-import { getDevelopers, addDeveloper } from './services/api';
+import { getDevelopers, addDeveloper, deleteDeveloper } from './services/api';
 
 function App() {
   const [developers, setDevelopers] = useState([]);
@@ -63,6 +63,16 @@ function App() {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
+  const handleDeleteDeveloper = async (id) => {
+    try {
+      await deleteDeveloper(id);
+      setDevelopers(prev => prev.filter(dev => dev.id !== id));
+      toast.success('Developer deleted successfully!');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to delete developer');
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="header">
@@ -85,7 +95,7 @@ function App() {
             
             <section>
               <SearchFilter filters={filters} onFilterChange={handleFilterChange} />
-              <DeveloperList developers={filteredDevelopers} loading={loading} />
+              <DeveloperList developers={filteredDevelopers} loading={loading} onDelete={handleDeleteDeveloper} />
             </section>
           </div>
         </div>

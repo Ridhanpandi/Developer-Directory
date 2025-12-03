@@ -1,7 +1,7 @@
 import React from 'react';
 import DeveloperCard from './DeveloperCard';
 
-function DeveloperList({ developers, loading }) {
+function DeveloperList({ developers, loading, onDelete }) {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-16 px-6 text-center bg-slate-800/70 backdrop-blur-xl rounded-2xl border-2 border-dashed border-slate-700/50">
@@ -24,7 +24,7 @@ function DeveloperList({ developers, loading }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {developers.map(developer => (
-        <DeveloperCard key={developer.id} developer={developer} />
+        <DeveloperCard key={developer.id} developer={developer} onDelete={onDelete} />
       ))}
     </div>
   );

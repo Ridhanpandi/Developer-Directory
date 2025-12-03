@@ -8,5 +8,15 @@
     ],
     "experience": 0,
     "createdAt": "2025-12-03T04:13:07.530Z"
+  },
+  {
+    "id": "cb1fcc3e-4b2c-4145-bd7a-be7f62bc5343",
+    "name": "john",
+    "role": "Frontend",
+    "techStack": [
+      "node.js"
+    ],
+    "experience": 3,
+    "createdAt": "2025-12-03T11:30:31.912Z"
   }
 ]

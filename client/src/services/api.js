@@ -18,3 +18,8 @@ export const addDeveloper = async (developerData) => {
   const response = await api.post('/developers', developerData);
   return response.data;
 };
+
+export const deleteDeveloper = async (id) => {
+  const response = await api.delete(`/developers/${id}`);
+  return response.data;
+};

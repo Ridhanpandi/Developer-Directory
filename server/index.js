@@ -83,6 +83,31 @@ app.post('/developers', (req, res) => {
   }
 });
 
+// DELETE /developers/:id - Delete a developer
+app.delete('/developers/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({ success: false, message: 'Developer ID is required' });
+    }
+
+    const developers = readDevelopers();
+    const developerIndex = developers.findIndex(dev => dev.id === id);
+
+    if (developerIndex === -1) {
+      return res.status(404).json({ success: false, message: 'Developer not found' });
+    }
+
+    const deletedDeveloper = developers.splice(developerIndex, 1);
+    writeDevelopers(developers);
+
+    res.json({ success: true, data: deletedDeveloper[0], message: 'Developer deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to delete developer' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
