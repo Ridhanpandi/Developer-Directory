@@ -137,7 +137,11 @@ function DeveloperForm({ onSubmit }) {
           {errors.experience && <span id="exp-error" className="text-xs text-red-400 font-medium mt-1">{errors.experience}</span>}
         </div>
 
-        <button type="submit" className="submit-btn" disabled={submitting}>
+        <button 
+          type="submit" 
+          disabled={submitting}
+          className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-500 to-cyan-500 text-white border-0 rounded-lg text-base font-semibold cursor-pointer transition-all duration-300 mt-2 relative overflow-hidden hover:shadow-lg hover:shadow-purple-500/50 disabled:opacity-60 disabled:cursor-not-allowed"
+        >
           {submitting ? (
             <>
               <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>

@@ -92,13 +92,14 @@
   .developer-card {
     @apply bg-slate-800/70 backdrop-blur-xl rounded-2xl p-6 shadow-sm border border-slate-700/20 transition-all duration-300 relative overflow-hidden;
     transform-style: preserve-3d;
-    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards, glow 3s ease-in-out infinite;
+    animation: slideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.1);
   }
 
-  .developer-card:nth-child(1) { animation-delay: 0.1s, 0s; }
-  .developer-card:nth-child(2) { animation-delay: 0.2s, 0.3s; }
-  .developer-card:nth-child(3) { animation-delay: 0.3s, 0.6s; }
-  .developer-card:nth-child(n+4) { animation-delay: 0.4s, 0.9s; }
+  .developer-card:nth-child(1) { animation-delay: 0.1s; }
+  .developer-card:nth-child(2) { animation-delay: 0.2s; }
+  .developer-card:nth-child(3) { animation-delay: 0.3s; }
+  .developer-card:nth-child(n+4) { animation-delay: 0.4s; }
 
   .developer-card::before {
     content: '';
@@ -114,6 +115,7 @@
     @apply shadow-2xl;
     transform: translateY(-8px) translateZ(20px) rotateX(5deg) rotateY(-2deg);
     background: rgba(30, 41, 59, 0.9);
+    box-shadow: 0 0 40px rgba(124, 58, 237, 0.6), 0 0 80px rgba(236, 72, 153, 0.4), inset 0 0 30px rgba(124, 58, 237, 0.1);
   }
 
   .developer-card:hover::before {
@@ -210,6 +212,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes cardGlow {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.5), 0 0 60px rgba(236, 72, 153, 0.3), inset 0 0 20px rgba(124, 58, 237, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(124, 58, 237, 0.8), 0 0 100px rgba(236, 72, 153, 0.5), inset 0 0 30px rgba(124, 58, 237, 0.15);
   }
 }
 
