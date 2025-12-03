@@ -28,25 +28,16 @@ function DeveloperCard({ developer, onDelete }) {
 
   return (
     <article className="developer-card">
-      <div className="flex justify-between items-start gap-3 mb-4">
-        <div className="flex items-center gap-4 flex-1">
-          <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 bg-gradient-to-br ${gradients[role] || gradients['Full-Stack']}`}>
-            {getInitials(name)}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-slate-100 mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{name}</h3>
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border uppercase tracking-wide bg-gradient-to-br ${colors.bg} ${colors.text} ${colors.border} border`}>
-              {role}
-            </span>
-          </div>
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 bg-gradient-to-br ${gradients[role] || gradients['Full-Stack']}`}>
+          {getInitials(name)}
         </div>
-        <button
-          onClick={handleDelete}
-          className="text-red-400 hover:text-red-300 hover:bg-red-500/20 p-2 rounded-lg transition-all duration-200 flex-shrink-0"
-          title="Delete developer"
-        >
-          ✕
-        </button>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg font-semibold text-slate-100 mb-1.5 whitespace-nowrap overflow-hidden text-ellipsis">{name}</h3>
+          <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border uppercase tracking-wide bg-gradient-to-br ${colors.bg} ${colors.text} ${colors.border} border`}>
+            {role}
+          </span>
+        </div>
       </div>
       
       <div className="card-body">
