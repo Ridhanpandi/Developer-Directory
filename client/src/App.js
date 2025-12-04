@@ -103,7 +103,6 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>© 2024 Developer Directory. Built with React & Node.js</p>
         </div>
       </footer>
 
