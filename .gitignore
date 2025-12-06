@@ -1,23 +1,42 @@
 # Dependencies
 node_modules/
-client/node_modules/
+/.pnp
+.pnp.js
 
-# Build
-client/build/
-
-# Environment
+# Environment variables
 .env
 .env.local
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Build outputs
+/build
+/dist
+/.next
+/out
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
 # OS
-.DS_Store
 Thumbs.db
+.DS_Store
 
-# Logs
-*.log
-npm-debug.log*
+# Testing
+/coverage
+.nyc_output
+
+# Misc
+.cache/

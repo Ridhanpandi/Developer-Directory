@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { addDeveloper } from '../services/api';
+import { toast } from 'react-toastify';
 
 const ROLES = ['Frontend', 'Backend', 'Full-Stack'];
 
 const initialFormState = {
   name: '',
   role: '',
-  techStack: '',
-  experience: ''
+  techStack: [],
+  experience: '',
+  description: ''
 };
 
-function DeveloperForm({ onSubmit }) {
+function DeveloperForm({ onSubmit, isDark = true }) {
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -27,8 +30,8 @@ function DeveloperForm({ onSubmit }) {
       newErrors.role = 'Please select a role';
     }
     
-    if (!formData.techStack.trim()) {
-      newErrors.techStack = 'Tech stack is required';
+    if (formData.techStack.length === 0) {
+      newErrors.techStack = 'Add at least one technology';
     }
     
     if (formData.experience === '') {
@@ -49,23 +52,49 @@ function DeveloperForm({ onSubmit }) {
     }
   };
 
+  const handleAddTech = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const tech = e.target.value.trim();
+      if (tech && !formData.techStack.includes(tech)) {
+        setFormData(prev => ({ ...prev, techStack: [...prev.techStack, tech] }));
+        e.target.value = '';
+        if (errors.techStack) {
+          setErrors(prev => ({ ...prev, techStack: '' }));
+        }
+      } else if (!tech) {
+        toast.error('Please enter a technology name');
+      } else if (formData.techStack.includes(tech)) {
+        toast.error('This technology is already added');
+      }
+    }
+  };
+
+  const handleRemoveTech = (tech) => {
+    setFormData(prev => ({ ...prev, techStack: prev.techStack.filter(t => t !== tech) }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validate()) return;
     
     setSubmitting(true);
-    const success = await onSubmit(formData);
-    setSubmitting(false);
-    
-    if (success) {
+    try {
+      await addDeveloper(formData);
       setFormData(initialFormState);
+      await onSubmit();
+      toast.success('Developer added successfully!');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to add developer');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="form-card">
-      <h2 className="form-title">
+    <div className={`form-card ${isDark ? 'bg-slate-800/70 border-slate-700/50' : 'bg-white border-slate-200'}`}>
+      <h2 className={`form-title ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
         <span className="form-icon">➕</span>
         Add Developer
       </h2>
@@ -81,9 +110,8 @@ function DeveloperForm({ onSubmit }) {
             onChange={handleChange}
             placeholder="John Doe"
             className={`w-full px-4 py-3 border-2 rounded-lg text-sm bg-slate-800/70 backdrop-blur-xl text-slate-100 transition-all ${errors.name ? 'border-red-500' : 'border-slate-700/50'}`}
-            aria-describedby={errors.name ? 'name-error' : undefined}
           />
-          {errors.name && <span id="name-error" className="text-xs text-red-400 font-medium mt-1">{errors.name}</span>}
+          {errors.name && <span className="text-xs text-red-400 font-medium mt-1">{errors.name}</span>}
         </div>
 
         <div className="form-group">
@@ -94,14 +122,13 @@ function DeveloperForm({ onSubmit }) {
             value={formData.role}
             onChange={handleChange}
             className={`w-full px-4 py-3 border-2 rounded-lg text-sm bg-slate-800/70 backdrop-blur-xl text-slate-100 transition-all ${errors.role ? 'border-red-500' : 'border-slate-700/50'}`}
-            aria-describedby={errors.role ? 'role-error' : undefined}
           >
             <option value="">Select a role</option>
             {ROLES.map(role => (
               <option key={role} value={role}>{role}</option>
             ))}
           </select>
-          {errors.role && <span id="role-error" className="text-xs text-red-400 font-medium mt-1">{errors.role}</span>}
+          {errors.role && <span className="text-xs text-red-400 font-medium mt-1">{errors.role}</span>}
         </div>
 
         <div className="form-group">
@@ -109,15 +136,24 @@ function DeveloperForm({ onSubmit }) {
           <input
             type="text"
             id="techStack"
-            name="techStack"
-            value={formData.techStack}
-            onChange={handleChange}
-            placeholder="React, Node.js, MongoDB"
+            onKeyPress={handleAddTech}
+            placeholder="Type technology name and press Enter (e.g., React, Node.js)"
             className={`w-full px-4 py-3 border-2 rounded-lg text-sm bg-slate-800/70 backdrop-blur-xl text-slate-100 transition-all ${errors.techStack ? 'border-red-500' : 'border-slate-700/50'}`}
-            aria-describedby={errors.techStack ? 'tech-error' : undefined}
           />
-          <span className="text-xs text-slate-500 mt-1">Separate technologies with commas</span>
-          {errors.techStack && <span id="tech-error" className="text-xs text-red-400 font-medium mt-1">{errors.techStack}</span>}
+          <p className="text-xs text-slate-500 mt-1">Press Enter to add each technology</p>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {formData.techStack.length > 0 ? (
+              formData.techStack.map((tech, index) => (
+                <span key={index} className="px-3 py-1 bg-purple-600/20 text-purple-300 rounded-full text-xs border border-purple-500/40 flex items-center gap-2">
+                  {tech}
+                  <button type="button" onClick={() => handleRemoveTech(tech)} className="text-purple-400 hover:text-purple-200">✕</button>
+                </span>
+              ))
+            ) : (
+              <span className="text-xs text-slate-500 italic">No technologies added yet</span>
+            )}
+          </div>
+          {errors.techStack && <span className="text-xs text-red-400 font-medium mt-1">{errors.techStack}</span>}
         </div>
 
         <div className="form-group">
@@ -132,9 +168,21 @@ function DeveloperForm({ onSubmit }) {
             min="0"
             max="50"
             className={`w-full px-4 py-3 border-2 rounded-lg text-sm bg-slate-800/70 backdrop-blur-xl text-slate-100 transition-all ${errors.experience ? 'border-red-500' : 'border-slate-700/50'}`}
-            aria-describedby={errors.experience ? 'exp-error' : undefined}
           />
-          {errors.experience && <span id="exp-error" className="text-xs text-red-400 font-medium mt-1">{errors.experience}</span>}
+          {errors.experience && <span className="text-xs text-red-400 font-medium mt-1">{errors.experience}</span>}
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="description" className="block text-sm font-medium text-slate-400 mb-1">About (Optional)</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Tell us about yourself..."
+            rows="3"
+            className="w-full px-4 py-3 border-2 border-slate-700/50 rounded-lg text-sm bg-slate-800/70 backdrop-blur-xl text-slate-100 transition-all"
+          />
         </div>
 
         <button 
