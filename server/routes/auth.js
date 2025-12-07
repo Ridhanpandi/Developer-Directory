@@ -40,14 +40,21 @@ router.post('/signup', validate(schemas.signup), async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Signup error:', error);
+    console.error('Signup error:', error.message);
+    console.error('Error details:', error);
     
     // Handle duplicate key error
     if (error.code === 11000) {
       return res.status(400).json({ success: false, message: 'Email already registered' });
     }
     
-    res.status(500).json({ success: false, message: 'Failed to create user' });
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ success: false, message: messages.join(', ') });
+    }
+    
+    res.status(500).json({ success: false, message: 'Failed to create user', error: error.message });
   }
 });
 
