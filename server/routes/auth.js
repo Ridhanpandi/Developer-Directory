@@ -12,7 +12,7 @@ router.post('/signup', validate(schemas.signup), async (req, res) => {
     const { name, email, password } = req.validatedData;
 
     // Check if user exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({ success: false, message: 'Email already registered' });
     }
@@ -23,7 +23,7 @@ router.post('/signup', validate(schemas.signup), async (req, res) => {
     // Create user
     const user = new User({
       name,
-      email,
+      email: email.toLowerCase(),
       password_hash: hashedPassword
     });
 
@@ -41,6 +41,12 @@ router.post('/signup', validate(schemas.signup), async (req, res) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
+    
+    // Handle duplicate key error
+    if (error.code === 11000) {
+      return res.status(400).json({ success: false, message: 'Email already registered' });
+    }
+    
     res.status(500).json({ success: false, message: 'Failed to create user' });
   }
 });
@@ -51,7 +57,7 @@ router.post('/login', validate(schemas.login), async (req, res) => {
     const { email, password } = req.validatedData;
 
     // Find user
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
